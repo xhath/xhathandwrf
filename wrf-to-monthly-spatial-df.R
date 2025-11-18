@@ -19,8 +19,6 @@ mengolahbulanan <- function(wrf,var,bulan){
     rain <- apply(rain,c(1,2),sum)
     
     wrf.var <- rain
-    
-    
   } else if(var == 'Suhu2m'){
     T2 <- ncvar_get(wrf,'T2')-273.15
     T2 <- T2[,,idx]
@@ -34,8 +32,12 @@ mengolahbulanan <- function(wrf,var,bulan){
     ws <- apply(ws,c(1,2),mean)
     wrf.var <- ws
 
-  } 
-  
+  } else if (var == 'SfTemp'){
+    TS <- ncvar_get(wrf,'TSK')-273.15
+    TS <- TS[,,idx]
+    TS <- apply(TS,c(1,2),mean)
+    wrf.var <- T2
+  }  
   array3d <- array(wrf.var,dim(wrf.var),
                    dimnames=
                      list(
@@ -48,3 +50,4 @@ mengolahbulanan <- function(wrf,var,bulan){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
+
