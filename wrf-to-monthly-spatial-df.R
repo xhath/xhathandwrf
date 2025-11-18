@@ -13,7 +13,7 @@ mengolahbulanan <- function(wrf,var,bulan){
   date <- as.POSIXct(date, format = '%Y-%m-%d %H:%M:%S', tz = 'Asia/Makassar')
   date <- as.Date(date,format = '%Y-%m-%d')
   idx <- format(date,'%m') == bulan
-  if (var=='Hujan'){
+  if (var=='Rain'){
     rain <- ncvar_get(wrf,'PREC_ACC_C') + ncvar_get(wrf,'PREC_ACC_NC')
     rain <- rain[,,idx]
     rain <- apply(rain,c(1,2),sum)
@@ -61,3 +61,4 @@ mengolahbulanan <- function(wrf,var,bulan){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
+
