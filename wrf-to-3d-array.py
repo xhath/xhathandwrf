@@ -1,5 +1,4 @@
 import xarray as xr
-import pandas as pd
 import numpy as np
 
 def nc_to_3d(wrf,var,month):
