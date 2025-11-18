@@ -3,4 +3,4 @@ WRF Post-Processing in R and Python [newbie]
 
 This is my script for processing WRF output file in R and python programming language, as we know the WRF output default setting is to create nc file with 60 minute interval, I create this script for my final undergraduate project to ease visualizing monthly WRF Output file
 
-This script need 3 variable which is the directory for the output file, the variable you want to extract (in string), and month to extract (in string)
+This script need 3 variable which is the directory for the WRF output file, the variable you want to extract (in string), and month to extract (in string)
