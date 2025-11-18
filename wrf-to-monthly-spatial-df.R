@@ -45,7 +45,7 @@ mengolahbulanan <- function(wrf,var,bulan){
     es <- 6.1094 * exp(17.625 * (T)/(T + 243.04))
     ws <- 0.622*es/(ps-es)
     rh <- qv2/ws * 100
-
+    rh <- rh[,,idx]
     wrf.var <- rh
   }
   array3d <- array(wrf.var,dim(wrf.var),
@@ -60,6 +60,7 @@ mengolahbulanan <- function(wrf,var,bulan){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
+
 
 
 
