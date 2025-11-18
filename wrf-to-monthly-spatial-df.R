@@ -37,7 +37,17 @@ mengolahbulanan <- function(wrf,var,bulan){
     TS <- TS[,,idx]
     TS <- apply(TS,c(1,2),mean)
     wrf.var <- TS
-  }  
+  } else if (var == 'RH'){
+    T <- ncvar_get(wrf,'T2')-273.15
+    ps <- ncvar_get(wrf,'PSFC')/100
+    qv2 <- ncvar_get(wrf,'Q2')
+
+    es <- 6.1094 * exp(17.625 * (T)/(T + 243.04))
+    ws <- 0.622*es/(ps-es)
+    rh <- qv2/ws * 100
+
+    wrf.var <- rh
+  }
   array3d <- array(wrf.var,dim(wrf.var),
                    dimnames=
                      list(
@@ -50,5 +60,6 @@ mengolahbulanan <- function(wrf,var,bulan){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
+
 
 
