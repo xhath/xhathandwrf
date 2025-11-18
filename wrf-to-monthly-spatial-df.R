@@ -36,7 +36,7 @@ mengolahbulanan <- function(wrf,var,bulan){
     TS <- ncvar_get(wrf,'TSK')-273.15
     TS <- TS[,,idx]
     TS <- apply(TS,c(1,2),mean)
-    wrf.var <- T2
+    wrf.var <- TS
   }  
   array3d <- array(wrf.var,dim(wrf.var),
                    dimnames=
@@ -50,4 +50,5 @@ mengolahbulanan <- function(wrf,var,bulan){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
+
 
