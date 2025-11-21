@@ -1,4 +1,4 @@
-mengolahbulanan <- function(wrf,var,bulan){
+mengolahbulanan <- function(wrf,var,bulan,local_tz){
   
   library(ncdf4)
   library(tidyverse)
@@ -10,7 +10,7 @@ mengolahbulanan <- function(wrf,var,bulan){
   long <- long[,1,1]
   date <- ncvar_get(wrf,'Times')
   date <- as.POSIXct(date,format='%Y-%m-%d_%H:%M:%S',tz = 'UTC')
-  date <- as.POSIXct(date, format = '%Y-%m-%d %H:%M:%S', tz = 'Asia/Makassar')
+  date <- as.POSIXct(date, format = '%Y-%m-%d %H:%M:%S', tz = local_tz)
   date <- as.Date(date,format = '%Y-%m-%d')
   idx <- format(date,'%m') == bulan
   if (var=='Rain'){
@@ -61,4 +61,5 @@ mengolahbulanan <- function(wrf,var,bulan){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
+
 
