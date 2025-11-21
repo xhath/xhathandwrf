@@ -7,3 +7,5 @@ delta_cor <- function(dfobs, dfbaseline, dfmodel){
   corrected <- ratio * obs
  
 }
+
+#InputWithDataFrame
