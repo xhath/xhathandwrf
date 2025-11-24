@@ -1,24 +1,34 @@
-mengolahbulanan <- function(wrf,var,bulan,local_tz){
+mengolahbulanan <- function(wrf,var,bulan){
   
   library(ncdf4)
   library(tidyverse)
   wrf <- nc_open(wrf)
   long <- ncvar_get(wrf,'XLONG')
   lat <- ncvar_get(wrf,'XLAT')
+  XTIME <- ncvar_get(wrf, "XTIME")
   
   lat <- lat[1,,1]
   long <- long[,1,1]
   date <- ncvar_get(wrf,'Times')
   date <- as.POSIXct(date,format='%Y-%m-%d_%H:%M:%S',tz = 'UTC')
-  date <- as.POSIXct(date, format = '%Y-%m-%d %H:%M:%S', tz = local_tz)
+  date <- as.POSIXct(date, format = '%Y-%m-%d %H:%M:%S', tz = 'Asia/Makassar')
   date <- as.Date(date,format = '%Y-%m-%d')
   idx <- format(date,'%m') == bulan
-  if (var=='Rain'){
-    rain <- ncvar_get(wrf,'PREC_ACC_C') + ncvar_get(wrf,'PREC_ACC_NC')
-    rain <- rain[,,idx]
-    rain <- apply(rain,c(1,2),sum)
+  if (var=='Hujan'){
+    rainc <- ncvar_get(wrf, 'RAINC')
+    rainnc <- ncvar_get(wrf, 'RAINNC')
+    rain <- rainc + rainnc
+    rain_diff <- rain
+    for(i in 2:dim(rain)[3]) {
+      rain_diff[,,i] <- rain[,,i] - rain[,,i-1]
+    }
+    rain_diff[rain_diff < 0] <- 0
+    rain_diff <- rain_diff[,,idx]
+    rain_diff <- apply(rain_diff, c(1,2), sum)
     
-    wrf.var <- rain
+    wrf.var <- rain_diff
+  }
+  
   } else if(var == 'Suhu2m'){
     T2 <- ncvar_get(wrf,'T2')-273.15
     T2 <- T2[,,idx]
@@ -48,7 +58,7 @@ mengolahbulanan <- function(wrf,var,bulan,local_tz){
     rh <- rh[,,idx]
     rh <- apply(rh,c(1,2),mean)
     wrf.var <- rh
-  }
+  } 
   array3d <- array(wrf.var,dim(wrf.var),
                    dimnames=
                      list(
@@ -61,5 +71,3 @@ mengolahbulanan <- function(wrf,var,bulan,local_tz){
     mutate(lat = as.numeric(as.character(lat)))
   
 }
-
-
