@@ -22,7 +22,7 @@ membuatncdf <- function(wrf,outputpath){
   rainnc <- ncvar_get(wrf, 'RAINNC')
   rain <- rainc + rainnc
   rain[rain >= 1e30] <- 0
-  rain[rain>1000] <- 0
+  #rain[rain>1000] <- 0
   rain[rain>250] <- 0
   rain[rain < 0] <- 0
   rain_diff <- rain
