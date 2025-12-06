@@ -21,16 +21,16 @@ membuatncdf <- function(wrf,outputpath){
   rainc <- ncvar_get(wrf, 'RAINC')
   rainnc <- ncvar_get(wrf, 'RAINNC')
   rain <- rainc + rainnc
-  rain[rain >= 1e30] <- 0
+  rain[rain == 9999] <- 0
   #rain[rain>1000] <- 0
-  rain[rain>250] <- 0
+  #rain[rain>=250] <- 0
   rain[rain < 0] <- 0
   rain_diff <- rain
   for(i in 2:dim(rain)[3]) {
     rain_diff[,,i] <- rain[,,i] - rain[,,i-1]
     }
   rain_diff[rain_diff < 0] <- 0
-  rain_diff[rain_diff > 250] <- 0
+  #rain_diff[rain_diff>=250] <- 0
   hourly_rain <- as.numeric(rain_diff)
 
   T2 <- ncvar_get(wrf,'T2')-273.15
@@ -80,4 +80,3 @@ membuatncdf <- function(wrf,outputpath){
   nc_close(nc_fixed)
   
 }
-
