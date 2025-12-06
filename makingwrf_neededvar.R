@@ -60,12 +60,12 @@ membuatncdf <- function(wrf,outputpath){
   #time_date_rain <- ncdim_def('time','hourly',vals = 1:rain_date)
   time_date <- ncdim_def('time','hourly',vals=1:date)
   
-  var_rain <- ncvar_def('rain','mm/hour',dim=list(longitude,latitude,time_date))
+  var_rain <- ncvar_def('rain','mm/hour',dim=list(longitude,latitude,time_date),missval = 9999)
   
-  var_t2m    <- ncvar_def('t2m', 'degC', list(longitude,latitude,time_date))
-  var_sftemp <- ncvar_def('surface_temp', 'degC', list(longitude,latitude,time_date))
-  var_ws10m  <- ncvar_def('windspeed_10m', 'm/s', list(longitude,latitude,time_date))
-  var_rh     <- ncvar_def('rh', '%', list(longitude,latitude,time_date))
+  var_t2m    <- ncvar_def('t2m', 'degC', list(longitude,latitude,time_date),missval = 9999)
+  var_sftemp <- ncvar_def('surface_temp', 'degC', list(longitude,latitude,time_date),missval = 9999)
+  var_ws10m  <- ncvar_def('windspeed_10m', 'm/s', list(longitude,latitude,time_date),missval = 9999)
+  var_rh     <- ncvar_def('rh', '%', list(longitude,latitude,time_date),missval = 9999)
   #var_time <- ncvar_def('time','date',list(as.numeric(timez)))
   
   nc_fixed <- nc_create(outputpath,vars=list(var_rain,var_rh,var_ws10m,var_sftemp,var_t2m))
